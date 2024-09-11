@@ -85,8 +85,8 @@ class Player{
             }
             if(aceCount > 0){
                 for(int i = 0; i < aceCount; i++){
-                    if((total + (aceCount - i)) >= 21){
-                        return (total + (aceCount - 1));
+                    if((total + 11) > 21){
+                        return (total + (aceCount - i));
                     }else{
                         total += 11;
                     }
@@ -105,15 +105,13 @@ class Game{
 
         int playerTotal;
         int dealerTotal;
+        int playerChoice = 0;
 
     public:
         void play(){
             deck.shuffle();
 
             dealer.draw(deck);
-            player.draw(deck);
-            player.draw(deck);
-            player.draw(deck);
             player.draw(deck);
             player.draw(deck);
 
@@ -127,31 +125,41 @@ class Game{
 
             cout << "What would you like to do?" << endl;
             cout << "(1) Hit" << endl;
-            cout << "(1) Stand" << endl;
-        }
+            cout << "(2) Stand" << endl;
+            cin >> playerChoice;
 
-        void hit(Player player){
-            player.draw(deck);
+            while(playerChoice != 1 || playerChoice != 2)
+            switch(playerChoice){
+                case 1:
+                    player.draw(deck);
+                    break;
+                case 2:
+                    while(dealer.findTotal() <= 17){
+                        player.draw(deck);
+                    }
+
+                    playerTotal = player.findTotal();
+                    dealerTotal = dealer.findTotal();
+
+                    if(dealerTotal > 21){
+                        cout << "Dealer busts! You win!" << endl;
+                    }else if(dealerTotal = 21){
+                            cout << "Dealer has blackjack! You Lose!" << endl;
+                        }else if(dealerTotal < playerTotal){
+                                    cout << "You win!" << endl;
+                            }else if(dealerTotal = playerTotal){
+                                    cout << "It's a draw!" << endl;
+                                }
+                    break;
+                default:
+                    cout << "Incorrect input. Please try again.";
+                    cin >> playerChoice;
+            }
+
         }
 
         void stand(){
-            while(dealer.findTotal() <= 17){
-                hit(dealer);
-            }
-
-            playerTotal = player.findTotal();
-            dealerTotal = dealer.findTotal();
-
-            if(dealerTotal > 21){
-                cout << "Dealer busts! You win!" << endl;
-            }else if(dealerTotal = 21){
-                    cout << "Dealer has blackjack! You Lose!" << endl;
-                }else if(dealerTotal < playerTotal){
-                            cout << "You win!" << endl;
-                    }else if(dealerTotal = playerTotal){
-                            cout << "It's a draw!" << endl;
-                        }
-                    }
+            
 };
 
 int main(){
